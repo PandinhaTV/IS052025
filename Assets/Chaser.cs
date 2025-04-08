@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using System.Collections;
 
@@ -13,41 +14,58 @@ public class Chaser : MonoBehaviour
 
 		private bool isSeen = false;
 
+		
+
+		void Start()
+		{
+			var data = OutfitData.Instance;
+			/*customizer.SetOutfit(
+				data.topOptions, data.topIndex,
+				data.midOptions, data.midIndex,
+				data.bottomOptions, data.bottomIndex
+			);*/
+		}
+
+		
+
 		void Update()
 		{
-			Vector3 toEnemy = (transform.position - playerCamera.position).normalized;
-			float angle = Vector3.Angle(playerCamera.forward, toEnemy);
-
-			// Is enemy within the player's view cone?
-			if (angle < viewAngleThreshold)
-			{
-				Ray ray = new Ray(playerCamera.position, toEnemy);
-				if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, ~0))
+				Vector3 toEnemy = (transform.position - playerCamera.position).normalized;
+				float angle = Vector3.Angle(playerCamera.forward, toEnemy);
+				
+				// Is enemy within the player's view cone?
+				if (angle < viewAngleThreshold)
 				{
-					if (hit.transform == transform)
+					Ray ray = new Ray(playerCamera.position, toEnemy);
+					if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, ~0))
 					{
-						isSeen = true;
-					}
-					else
-					{
-						isSeen = false; // Something is blocking the view
+						if (hit.transform == transform)
+						{
+							isSeen = true;
+						}
+						else
+						{
+							isSeen = false; // Something is blocking the view
+						}
 					}
 				}
-			}
-			else
-			{
-				isSeen = false;
-			}
+				else
+				{
+					isSeen = false;
+				}
 
-			if (!isSeen)
-			{
-				FollowPlayer();
-			}
+				if (!isSeen)
+				{
+					FollowPlayer();
+				}
 		}
 
-		void FollowPlayer()
-		{
-			Vector3 direction = (playerCamera.position - transform.position).normalized;
-			transform.position += direction * (followSpeed * Time.deltaTime);
-		}
+			void FollowPlayer()
+			{
+				
+				Vector3 direction = (playerCamera.position - transform.position).normalized;
+				Quaternion targetRotation = Quaternion.LookRotation(direction);
+				transform.position += direction * (followSpeed * Time.deltaTime);
+				transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
+			}
 }
