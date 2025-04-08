@@ -8,7 +8,7 @@ interface IInteractable
 public class Interactor : MonoBehaviour
 {
     public Transform InteractorSource;
-
+    [SerializeField] public float pagesCollected = 0;
     public float InteractRange = 20f;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
