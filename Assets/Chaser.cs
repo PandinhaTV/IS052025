@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 using System.Collections;
-
+using UnityEngine.SceneManagement;
 //[RequireComponent(typeof(CharacterController))]
 
 public class Chaser : MonoBehaviour
@@ -19,17 +19,21 @@ public class Chaser : MonoBehaviour
 		void Start()
 		{
 			var data = OutfitData.Instance;
-			/*customizer.SetOutfit(
-				data.topOptions, data.topIndex,
-				data.midOptions, data.midIndex,
-				data.bottomOptions, data.bottomIndex
-			);*/
+			
 		}
 
-		
+		private void OnCollisionEnter(Collision collision)
+		{
+			if (collision.gameObject.CompareTag("Player"))
+			{
+				Debug.Log(collision.gameObject.name);
+				SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+			}
+		}
 
 		void Update()
 		{
+			LookatPlayer();
 				Vector3 toEnemy = (transform.position - playerCamera.position).normalized;
 				float angle = Vector3.Angle(playerCamera.forward, toEnemy);
 				
@@ -57,15 +61,23 @@ public class Chaser : MonoBehaviour
 				if (!isSeen)
 				{
 					FollowPlayer();
+					
 				}
+		}
+
+		void LookatPlayer()
+		{
+			Vector3 direction = (playerCamera.position - transform.position).normalized;
+			Quaternion targetRotation = Quaternion.LookRotation(direction);
+			transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
 		}
 
 			void FollowPlayer()
 			{
 				
 				Vector3 direction = (playerCamera.position - transform.position).normalized;
-				Quaternion targetRotation = Quaternion.LookRotation(direction);
+				
 				transform.position += direction * (followSpeed * Time.deltaTime);
-				transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
+				
 			}
 }
