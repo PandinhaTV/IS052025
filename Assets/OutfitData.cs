@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class OutfitData : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class OutfitData : MonoBehaviour
     public Sprite[] midOptions;
     public Sprite[] bottomOptions;
 
+    public bool firstTime = false;
     void Awake()
     {
         if (Instance == null)
@@ -23,5 +25,10 @@ public class OutfitData : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    public void FirstTime()
+    {
+        firstTime = true;
     }
 }

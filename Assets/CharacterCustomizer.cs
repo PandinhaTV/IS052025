@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
 public class CharacterCustomizer : MonoBehaviour
 {
@@ -20,6 +21,9 @@ public class CharacterCustomizer : MonoBehaviour
     public AudioClip audioClip2;
     public bool acabou = false;
     public AudioSource audioSource;
+    
+    
+    
     public void NextTop()
     {
         topIndex = (topIndex + 1) % topOptions.Length;
@@ -72,12 +76,13 @@ public class CharacterCustomizer : MonoBehaviour
     {
         audioSource.clip = audioClip2;
         audioSource.Play();
-        if (!audioSource.isPlaying)
-        {
-            acabou = true;
-        }
+        
+        
+        acabou = true;
+        
+        
         SaveCustomizationToOutfitData();
-        UnityEngine.SceneManagement.SceneManager.LoadScene(1);
+        
         
     }
     void SaveCustomizationToOutfitData()
@@ -93,6 +98,7 @@ public class CharacterCustomizer : MonoBehaviour
 
     private void Update()
     {
+        
         if (acabou == true)
         {
             SaveCustomizationToOutfitData();
