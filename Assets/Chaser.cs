@@ -23,8 +23,7 @@ public class Chaser : MonoBehaviour
 		void Start()
 		{
 			var data = OutfitData.Instance;
-			
-			
+			Time.timeScale = 1f;
 		}
 
 		private void OnCollisionEnter(Collision collision)
@@ -46,7 +45,9 @@ public class Chaser : MonoBehaviour
 			{
 				Debug.Log("Sound finished playing at: " + Time.time);
 				wasPlaying = false;
-				SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+				UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+				Cursor.lockState = CursorLockMode.Confined;
+				Cursor.visible = true;
             
 				// Additional debug actions here
 			}
