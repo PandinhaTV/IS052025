@@ -29,7 +29,6 @@ public class FPSController : MonoBehaviour
        public AudioSource audioSource;
        public AudioSource audioSource2;
        CharacterController characterController;
-       
        void Start()
        {
            videoPlayerIsPlaying = true;
@@ -44,18 +43,9 @@ public class FPSController : MonoBehaviour
     
        void Update()
        {
-           if (videoPlayerIsPlaying)
-           {
-               // Skip video with Escape key
-               if (Input.GetKeyDown(KeyCode.Escape))
-               {
-                   EndCutscene();
-               }
-               return; // Don't process movement if video is playing
-           }
-           
            if (!videoPlayerIsPlaying)
            {
+               
                #region Handles Movement
                  Vector3 forward = transform.TransformDirection(Vector3.forward);
                  Vector3 right = transform.TransformDirection(Vector3.right);
@@ -68,6 +58,8 @@ public class FPSController : MonoBehaviour
                  moveDirection = (forward * curSpeedX) + (right * curSpeedY);
           
                  #endregion
+          
+               
           
                  #region Handles Rotation
                  characterController.Move(moveDirection * Time.deltaTime);
@@ -82,14 +74,10 @@ public class FPSController : MonoBehaviour
           
                  #endregion 
            }
+          
        }
-
+       
        void OnVideoLoopPointReached(VideoPlayer vp)
-       {
-           EndCutscene();
-       }
-
-       void EndCutscene()
        {
            videoPlayer.Stop();
            Destroy(videoPlayerObject);
@@ -97,7 +85,6 @@ public class FPSController : MonoBehaviour
            videoPlayerIsPlaying = false;
            audioSource.Play();
            audioSource2.Play();
-           
            Debug.Log("The video player is not playing anymore.");
        }
 }
